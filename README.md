@@ -6,7 +6,6 @@ This project is a low-level implementation of an HTTP/1.1 web server written ent
 
 - Learn and implement the internal workings of a web server
 - Build a modular, extensible core for HTTP/1.1
-- Prepare for production-level features through clean, low-level implementation
 
 ---
 

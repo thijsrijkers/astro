@@ -1,98 +1,57 @@
-# Astro
+# Astra
 
-This project is a low-level implementation of an HTTP/1.1 web server written entirely in Go, without using the standard `net/http` package for core functionality. It handles raw TCP connections, manually parses HTTP requests, routes incoming requests to handlers, and constructs valid HTTP responses. The server supports persistent connections (keep-alive), concurrency via goroutines, and proper HTTP/1.1 compliance. Built from first principles, this server is designed to be minimal, educational, and extensible—ideal for learning the internals of web protocols or building lightweight, custom server software.
-
-## Goals
-
-- Learn and implement the internal workings of a web server
-- Build a modular, extensible core for HTTP/1.1
+A simple fantasy console emulator featuring an 8-bit CPU implemented in Go.  
+It includes registers, memory, and a basic instruction set to run simple programs.
 
 ---
 
-## Phase 1: Minimal, Functional HTTP/1.1 Server
+## Features
 
-This phase includes everything needed to create a working web server that can accept, parse, and respond to HTTP/1.1 requests from clients like browsers or `curl`.
-
-### Core Components
-
-1. **TCP Listener**
-   - Open a TCP socket on a given port and accept client connections.
-
-2. **Connection Handling**
-   - Handle each connection in its own goroutine for concurrency.
-   - Support multiple simultaneous client connections.
-
-3. **HTTP Request Parsing**
-   - Parse the HTTP request line, headers, and optional body.
-   - Store method, path, version, headers, and body in structured form.
-
-4. **Basic Routing**
-   - Match HTTP method and path.
-   - Route requests to appropriate handler functions.
-
-5. **HTTP Response Construction**
-   - Manually construct valid HTTP/1.1 responses including status line, headers, and body.
-   - Set `Content-Length`, `Content-Type`, and other required headers.
-
-6. **Keep-Alive Support**
-   - Respect `Connection: keep-alive` and `Connection: close` headers.
-   - Allow persistent connections as defined by HTTP/1.1.
-
-7. **Error Handling**
-   - Return appropriate error responses (400, 404, 500).
-   - Log malformed requests and server errors.
-
-8. **Graceful Shutdown**
-   - Catch termination signals.
-   - Close open connections and listener safely.
+- 8-bit CPU with:
+  - Registers: A, B (8-bit)
+  - Program Counter (PC), Stack Pointer (SP) (16-bit)
+  - Flags: Zero, Carry
+- 64KB Memory
+- Simple instruction set with:
+  - NOP, LDA, LDB, ADD, JMP, HLT
+- Step-by-step CPU execution cycle
 
 ---
 
-## Phase 2: Full-Featured HTTP Server (Optional Enhancements)
+## Getting Started
 
-After completing the minimal server, the following steps can be taken to build a production-ready feature set.
+### Prerequisites
 
-### Protocol Support
+- Go 1.18+
 
-- Add support for HTTP/2
-- Implement WebSocket upgrade handling
+---
 
-### Static and Dynamic Content
+- ## Example Program
 
-- Serve static files with proper MIME type detection
-- Implement support for file uploads
-- Add templating support for dynamic responses
+Loads two numbers, adds them, and halts:
 
-### Security Features
+| Instruction | Description         |
+|-------------|---------------------|
+| LDA 10      | Load 10 into A      |
+| LDB 20      | Load 20 into B      |
+| ADD A, B    | A = A + B           |
+| HLT         | Halt execution      |
 
-- Add TLS (HTTPS) support using self-signed or real certificates
-- Implement rate limiting
-- Add IP filtering and user-agent filtering
-- Set secure headers like HSTS and CSP
+Expected output:
+```
+A register after addition: 30
+```
 
-### HTTP Features
+## CPU Instruction Set (Opcodes)
 
-- Support for chunked transfer encoding
-- Implement gzip compression for responses
-- Add cookie parsing and setting
-- Handle redirects (301, 302)
-
-### Middleware and Routing
-
-- Build a middleware stack for logging, authentication, and metrics
-- Create a routing layer with parameterized routes
-
-### Observability
-
-- Add structured logging
-- Collect basic metrics (requests per second, latency)
-- Support request tracing with correlation IDs
-
-### Configuration and Deployment
-
-- Use configuration files or environment variables for settings
-- Add support for graceful restarts or hot reload during development
-- Dockerize the application for container deployment
+| Opcode | Instruction | Description               |
+|--------|-------------|---------------------------|
+| 0x00   | NOP         | No operation              |
+| 0x01   | LDA #imm    | Load immediate into A     |
+| 0x02   | LDB #imm    | Load immediate into B     |
+| 0x03   | ADD A, B    | Add B to A                |
+| 0x04   | JMP addr    | Jump to address           |
+| 0xFF   | HLT         | Halt CPU                  |
 
 ---
 

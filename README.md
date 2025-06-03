@@ -1,4 +1,4 @@
-# Astra
+# Astro
 
 A simple fantasy console emulator featuring an 8-bit CPU implemented in Go.  
 It includes registers, memory, and a basic instruction set to run simple programs.
